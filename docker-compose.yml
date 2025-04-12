@@ -17,6 +17,9 @@ services:
     container_name: wallet-api-db
     ports:
       - ${DOCKER_API_DB_PORT}:${DOCKER_API_DB_PORT}
+    volumes:
+      - ./api-db:/app
+      - /app/node_modules
     depends_on:
       - db
     networks:
@@ -27,6 +30,9 @@ services:
     container_name: wallet-api-gateway
     ports:
       - ${DOCKER_API_GATEWAY_PORT}:${DOCKER_API_GATEWAY_PORT}
+    volumes:
+      - ./api-gateway:/app
+      - /app/node_modules
     depends_on:
       - api-db
     networks:
