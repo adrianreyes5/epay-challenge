@@ -1,0 +1,9 @@
+# .gitignore
+
+.env
+
+api-gateway/.env
+api-db/.env
+
+api-db/node_modules
+api-gateway/node_modules

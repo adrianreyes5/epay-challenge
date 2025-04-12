@@ -1,0 +1,50 @@
+services:
+  db:
+    image: mysql:8
+    container_name: wallet-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_DOCKER_PORT}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wallet-network
+
+  api-db:
+    build: ./api-db
+    container_name: wallet-api-db
+    ports:
+      - ${DOCKER_API_DB_PORT}:${DOCKER_API_DB_PORT}
+    depends_on:
+      - db
+    networks:
+      - wallet-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: wallet-api-gateway
+    ports:
+      - ${DOCKER_API_GATEWAY_PORT}:${DOCKER_API_GATEWAY_PORT}
+    depends_on:
+      - api-db
+    networks:
+      - wallet-network
+
+  # frontend:
+  #   build: ./frontend
+  #   container_name: wallet-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - api-gateway
+
+networks:
+  wallet-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
