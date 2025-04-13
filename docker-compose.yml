@@ -5,6 +5,20 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "127.0.0.1",
+          "-uroot",
+          "-p${DB_ROOT_PASSWORD}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - ${DB_PORT}:${DB_DOCKER_PORT}
     volumes:
@@ -15,8 +29,11 @@ services:
   api-db:
     build: ./api-db
     container_name: wallet-api-db
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${API_DB_PORT}
     ports:
-      - ${DOCKER_API_DB_PORT}:${DOCKER_API_DB_PORT}
+      - ${API_DB_PORT}:${API_DB_PORT}
     volumes:
       - ./api-db:/app
       - /app/node_modules
@@ -28,8 +45,11 @@ services:
   api-gateway:
     build: ./api-gateway
     container_name: wallet-api-gateway
+    environment:
+      - PORT=${API_GATEWAY_PORT}
+      - API_DB_URL=${API_DB_URL}
     ports:
-      - ${DOCKER_API_GATEWAY_PORT}:${DOCKER_API_GATEWAY_PORT}
+      - ${API_GATEWAY_PORT}:${API_GATEWAY_PORT}
     volumes:
       - ./api-gateway:/app
       - /app/node_modules
