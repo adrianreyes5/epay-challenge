@@ -61,4 +61,4 @@ class clientService {
   }
 }
 
-module.exports = clientService;
+module.exports = new clientService();
