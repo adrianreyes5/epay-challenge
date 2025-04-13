@@ -27,11 +27,13 @@ done
 
 echo "Base de datos lista. Ejecutando migraciones..."
 
-# Generar e instalar Prisma client
-npx prisma generate
+
 
 # Ejecutar migraciones
 npx prisma migrate deploy
+
+# Generar e instalar Prisma client
+npx prisma generate
 
 echo "Iniciando la aplicación..."
 exec npm start
