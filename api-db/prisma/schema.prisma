@@ -10,6 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TransactionType {
+  DEPOSIT
+  PAYMENT
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+}
+
 model Client {
   id        Int      @id @default(autoincrement())
   document  String   @unique
@@ -19,7 +31,47 @@ model Client {
   phone     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  wallet    Wallet?
+  paymentSessions PaymentSession[]
 
   @@map("clients")
 }
  
+model Wallet {
+  id        Int      @id @default(autoincrement())
+  clientId  Int      @unique
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  client    Client   @relation(fields: [clientId], references: [id])
+  transactions Transaction[]
+
+  @@map("wallets")
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  walletId    Int
+  type        TransactionType
+  amount      Float
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  wallet      Wallet   @relation(fields: [walletId], references: [id])
+
+  @@map("transactions")
+}
+
+model PaymentSession {
+  id        Int      @id @default(autoincrement())
+  clientId  Int
+  amount    Float
+  token     String
+  status    PaymentStatus
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+  client    Client   @relation(fields: [clientId], references: [id])
+
+  @@map("payment_sessions")
+}
