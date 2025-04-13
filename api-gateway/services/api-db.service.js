@@ -42,11 +42,31 @@ const apiDbService = {
     }
   },
   /**
+   * Get wallet balance
+   */
+  getBalance: async (balanceData) => {
+    try {
+      const response = await apiDbClient.get(
+        `/wallets/balance?document=${balanceData.document}&phone=${balanceData.phone}`
+      );
+      return response;
+    } catch (error) {
+      console.error(
+        "Error calling API-DB service to get wallet balance:",
+        error.message
+      );
+      throw error;
+    }
+  },
+  /**
    * Create a payment session
    */
   createPaymentSession: async (paymentData) => {
     try {
-      const response = await apiDbClient.post("/payments/create-session", paymentData);
+      const response = await apiDbClient.post(
+        "/payments/create-session",
+        paymentData
+      );
       return response;
     } catch (error) {
       console.error(
@@ -61,7 +81,10 @@ const apiDbService = {
    */
   confirmPayment: async (confirmationData) => {
     try {
-      const response = await apiDbClient.post("/payments/confirm", confirmationData);
+      const response = await apiDbClient.post(
+        "/payments/confirm",
+        confirmationData
+      );
       return response;
     } catch (error) {
       console.error(

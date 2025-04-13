@@ -17,6 +17,21 @@ const rechargeWalletValidator = z.object({
     .positive({ message: "El monto debe ser un valor positivo" }),
 });
 
+/**
+ * Schema for validating wallet balance query
+ */
+const balanceWalletValidator = z.object({
+  document: z
+    .string()
+    .min(5, { message: "El documento debe tener al menos 5 caracteres" })
+    .max(20, { message: "El documento debe tener máximo 20 caracteres" }),
+  phone: z
+    .string()
+    .min(7, { message: "El teléfono debe tener al menos 7 caracteres" })
+    .max(15, { message: "El teléfono debe tener máximo 15 caracteres" }),
+});
+
 module.exports = {
   rechargeWalletValidator,
+  balanceWalletValidator,
 };
