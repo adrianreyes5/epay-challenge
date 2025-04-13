@@ -13,7 +13,6 @@ const apiDbClient = axios.create({
 const apiDbService = {
   /**
    * Register a new client
-   * @returns {Promise<Object>} API response with client data
    */
   registerClient: async (clientData) => {
     try {
@@ -22,6 +21,21 @@ const apiDbService = {
     } catch (error) {
       console.error(
         "Error calling API-DB service to register client:",
+        error.message
+      );
+      throw error;
+    }
+  },
+  /**
+   * Recharge a client's wallet
+   */
+  rechargeWallet: async (walletData) => {
+    try {
+      const response = await apiDbClient.post("/wallets/recharge", walletData);
+      return response;
+    } catch (error) {
+      console.error(
+        "Error calling API-DB service to recharge wallet:",
         error.message
       );
       throw error;

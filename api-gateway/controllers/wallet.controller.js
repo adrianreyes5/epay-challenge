@@ -1,25 +1,26 @@
+const dotenv = require("dotenv");
 const apiDbService = require("../services/api-db.service");
 
+dotenv.config();
+
 /**
- * Controller for client operations in the API Gateway
+ * Controller for wallet operations
  */
-const clientController = {
+class WalletController {
   /**
-   * Register a new client
+   * Recharge a client's wallet
    */
-  registerClient: async (req, res) => {
+  async rechargeWallet(req, res) {
     try {
-      const clientData = {
-        document: req.body.document,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        phone: req.body.phone,
-      };
+      const { document, phone, amount } = req.body;
 
-      const response = await apiDbService.registerClient(clientData);
+      const response = await apiDbService.rechargeWallet({
+        document,
+        phone,
+        amount,
+      });
 
-      return res.status(response.data.success ? 201 : 400).json({
+      return res.status(response.data.statusCode).json({
         success: response.data.success,
         message: response.data.message,
         data: response.data.data,
@@ -36,11 +37,11 @@ const clientController = {
 
       return res.status(500).json({
         success: false,
-        message: "Internal server error",
+        message: "Error interno del servidor",
         statusCode: 500,
       });
     }
-  },
-};
+  }
+}
 
-module.exports = clientController;
+module.exports = new WalletController();
