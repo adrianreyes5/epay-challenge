@@ -4,6 +4,10 @@
 
 ### Copiar .env.example a .env
 
+```bash
+cp .env.example .env
+```
+
 ### Docker
 
 ### Iniciar contenedores
