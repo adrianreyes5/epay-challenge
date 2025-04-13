@@ -1,10 +1,12 @@
 # Backend
 
-## API-DB & API-Gateway
+## API-DB & API-Gateway & Frontend
+
+### Copiar .env.example a .env
 
 ### Docker
 
-### Iniciar contenedores para los servicios de base de datos y rest
+### Iniciar contenedores
 
 ```bash
 
@@ -12,11 +14,4 @@ docker-compose up -d --build
 
 ```
 
-### Ejecutar migraciones
-
-```bash
-
-npx prisma migrate deploy
-npx prisma generate
-
-```
+## nota: las migraciones se ejecutan en el contenedor api-db al momento de iniciar el contenedor debido a que es un modo de desarrollo y prueba
