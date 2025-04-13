@@ -3,11 +3,11 @@ const apiDbService = require("../services/api-db.service");
 /**
  * Controller for client operations in the API Gateway
  */
-const clientController = {
+class clientController {
   /**
    * Register a new client
    */
-  registerClient: async (req, res) => {
+  async registerClient(req, res) {
     try {
       const clientData = {
         document: req.body.document,
@@ -19,7 +19,7 @@ const clientController = {
 
       const response = await apiDbService.registerClient(clientData);
 
-      return res.status(response.data.success ? 201 : 400).json({
+      return res.status(response.data.statusCode).json({
         success: response.data.success,
         message: response.data.message,
         data: response.data.data,
@@ -40,7 +40,7 @@ const clientController = {
         statusCode: 500,
       });
     }
-  },
-};
+  }
+}
 
-module.exports = clientController;
+module.exports = new clientController();
