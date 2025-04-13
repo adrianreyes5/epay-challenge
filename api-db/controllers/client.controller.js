@@ -3,11 +3,11 @@ const clientService = require("../services/client.service");
 /**
  * Controller for client operations
  */
-const clientController = {
+class clientController {
   /**
    * Register a new client
    */
-  registerClient: async (req, res) => {
+  async registerClient(req, res) {
     try {
       const { document, firstName, lastName, email, phone } = req.body;
 
@@ -33,7 +33,7 @@ const clientController = {
         statusCode: 500,
       });
     }
-  },
-};
+  }
+}
 
-module.exports = clientController;
+module.exports = new clientController();

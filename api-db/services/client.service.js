@@ -4,12 +4,11 @@ const prisma = new PrismaClient();
 /**
  * Service for client operations
  */
-const clientService = {
+class clientService {
   /**
    * Register a new client
-   * @returns {Promise<Object>} Created client
    */
-  registerClient: async (clientData) => {
+  async registerClient(clientData) {
     try {
       const { document, firstName, lastName, email, phone } = clientData;
 
@@ -59,7 +58,7 @@ const clientService = {
         statusCode: 500,
       };
     }
-  },
-};
+  }
+}
 
 module.exports = clientService;
