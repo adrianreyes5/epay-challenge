@@ -41,6 +41,36 @@ const apiDbService = {
       throw error;
     }
   },
+  /**
+   * Create a payment session
+   */
+  createPaymentSession: async (paymentData) => {
+    try {
+      const response = await apiDbClient.post("/payments/create-session", paymentData);
+      return response;
+    } catch (error) {
+      console.error(
+        "Error calling API-DB service to create payment session:",
+        error.message
+      );
+      throw error;
+    }
+  },
+  /**
+   * Confirm a payment with token
+   */
+  confirmPayment: async (confirmationData) => {
+    try {
+      const response = await apiDbClient.post("/payments/confirm", confirmationData);
+      return response;
+    } catch (error) {
+      console.error(
+        "Error calling API-DB service to confirm payment:",
+        error.message
+      );
+      throw error;
+    }
+  },
 };
 
 module.exports = apiDbService;
