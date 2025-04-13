@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
+const routes = require("./routes");
 
 dotenv.config();
 
@@ -14,14 +15,14 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/clients", require("./routes/client.routes"));
+app.use("/api", routes);
 
 async function startServer() {
   try {
     await prisma.$connect();
     console.log("Connected to MySQL database via Prisma");
 
-    const PORT = process.env.PORT || 3001;
+    const PORT = process.env.API_DB_PORT || 3001;
     app.listen(PORT, () => {
       console.log(`API-DB Service running on port ${PORT}`);
     });
