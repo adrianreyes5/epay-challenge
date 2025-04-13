@@ -6,6 +6,78 @@ const prisma = new PrismaClient();
  */
 class WalletService {
   /**
+   * Get wallet balance by document and phone
+   */
+  async getBalance(document, phone) {
+    console.log(document, phone);
+    if (!document || !phone) {
+      return {
+        success: false,
+        message: "Datos inválidos",
+        statusCode: 400,
+      };
+    }
+
+    try {
+      const client = await prisma.client.findFirst({
+        where: {
+          document: document,
+          phone: phone,
+        },
+        include: {
+          wallet: true,
+        },
+      });
+
+      console.log(client);
+
+      if (!client) {
+        return {
+          success: false,
+          message: "Cliente no encontrado. Verifique documento y teléfono",
+          statusCode: 404,
+        };
+      }
+
+      if (!client.wallet) {
+        return {
+          success: true,
+          message: "El cliente no tiene una billetera activa",
+          data: {
+            document: client.document,
+            firstName: client.firstName,
+            lastName: client.lastName,
+            balance: 0,
+            hasWallet: false,
+          },
+          statusCode: 200,
+        };
+      }
+
+      return {
+        success: true,
+        message: "Consulta de saldo exitosa",
+        data: {
+          document: client.document,
+          firstName: client.firstName,
+          lastName: client.lastName,
+          balance: client.wallet.balance,
+          hasWallet: true,
+          walletCreatedAt: client.wallet.createdAt,
+        },
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.error("Error en getBalance service:", error);
+      return {
+        success: false,
+        message: "Error al consultar el saldo",
+        statusCode: 500,
+      };
+    }
+  }
+
+  /**
    * Recharge a client's wallet
    */
   async rechargeWallet(document, phone, amount) {
