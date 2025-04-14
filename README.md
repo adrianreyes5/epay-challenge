@@ -1,5 +1,3 @@
-# Backend
-
 ## API-DB & API-Gateway & Frontend
 
 ### Copiar .env.example a .env
